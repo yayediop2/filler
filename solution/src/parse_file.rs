@@ -36,6 +36,9 @@ pub fn parse_file() -> (Vec<Vec<char>>, Vec<Vec<char>>) {
             piece.push(row);
             counter -= 1;
         }
+        if counter == 0 && !piece.is_empty() {
+            break;
+        }
     }
 
     (grid, piece)
