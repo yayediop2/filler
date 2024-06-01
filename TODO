@@ -38,5 +38,5 @@ Todo:
     ☐ distance:
         ☐ Calculate the Euclidean distance between two points on the board.
     ## Loop Control
-    ☐ Ensure the loop continues until all lines are read and processed.Item
+    ✔ Ensure the loop continues until all lines are read and processed.Item @done(24-06-01 23:03)
   

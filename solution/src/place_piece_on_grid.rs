@@ -1,36 +1,47 @@
-// pub fn place_piece_on_grid(grid: &Vec<Vec<char>>, piece: &Vec<Vec<char>>, enemy: char, enemy2: char) -> Vec<(usize, usize)> {
-//     let mut valid_position = vec![];
-//     for i in 0..grid.len() {
-//         for j in 0..grid[i].len() {
-//             if can_place_piece(j, i, grid, piece, enemy, enemy2) {
-//                valid_position.push((j, i));            
-//             }
-//         }
-//     }
-//     valid_position
-// }
 
-// pub fn can_place_piece(x: usize, y: usize, grid: &Vec<Vec<char>>, piece: &Vec<Vec<char>>,  enemy: char,  enemy2: char) -> bool {
-//     let grid_x_length = grid[0].len();
-//     let grid_y_length = grid.len(); 
-//     let mut overlap_counter = 0;
+pub fn place_piece_on_grid(
+    grid: &Vec<Vec<char>>,
+    piece: &Vec<Vec<char>>,
+    enemy: char,
+    enemy2: char,
+) -> (usize, usize) {
+    for i in 0..grid.len() {
+        for j in 0..grid[i].len() {
+            if can_place_piece(i, j, grid, piece, enemy, enemy2) {
+                return (j, i);
+            } 
+        }
+    }
+    (0, 0)
+}
 
-//     for i in 0..piece.len() {
-//         for j in 0..piece[i].len() {
-//             let (grid_x, grid_y) = (j + x, i + y);
+pub fn can_place_piece(
+    x: usize,
+    y: usize,
+    grid: &Vec<Vec<char>>,
+    piece: &Vec<Vec<char>>,
+    enemy: char,
+    enemy2: char,
+) -> bool {
+    let mut overlap_counter = 0;
 
-//             if grid_x >= grid_x_length || grid_y >= grid_y_length {
-//                 return false;
-//             }
+    for i in 0..piece.len() {
+        for j in 0..piece[i].len() {
+            if piece[i][j] == 'O' {
+                let (grid_x, grid_y) = (i + x, j + y);
 
-//             if  piece[i][j] == 'O' {
-//                 if grid[grid_x][grid_y] == enemy2 || grid[grid_x][grid_y] == enemy {
-//                     return false;
-//                 } else if grid[grid_x][grid_y] != '.' {
-//                     overlap_counter += 1;
-//                 }
-//             }
-//         }   
-//     }
-//     overlap_counter == 1
-// }
+                if grid_x >= grid.len() || grid_y >= grid[0].len() {
+                    return false;
+                }
+
+                if grid[grid_x][grid_y] == enemy2 || grid[grid_x][grid_y] == enemy {
+                    return false;
+                } else if grid[grid_x][grid_y] != '.' {
+                    overlap_counter += 1;
+                }
+            }
+        }
+    }
+
+    overlap_counter == 1
+}
