@@ -1,0 +1,42 @@
+
+Todo:
+    ## Initialization
+    ✔ Initialize standard input (stdin). @done(24-05-28 19:41)
+    ✔ Create empty vectors for anfield (game board) and piece. @done(24-05-28 19:42)
+    ✔ Create a string p to store player information. @done(24-05-29 00:15)
+    ## Reading Input
+    ✔ Lock the standard input and start reading lines in a loop. @done(24-05-29 00:15)
+    ## Player Identification
+    ✔ Check if the line starts with $$$. @done(24-05-29 00:15)
+        ✔ If true, split the line to extract the player identifier and assign it to p. @done(24-05-29 00:15)
+    ## Reading the Anfield (Board)
+    ✔ Check if the line starts with Anfield. @done(24-05-29 00:16)
+        ✔ If true, split the line to extract the height of the board. @done(24-05-29 00:16)
+        ✔ Skip the next line (contains only numbers). @done(24-05-29 00:16)
+        ✔ Read each subsequent line (board configuration), strip the first four characters, and collect the rest into anfield. @done(24-05-29 00:17)
+    ## Reading the Piece
+    ✔ Check if the line starts with Piece. @done(24-05-29 00:45)
+        ✔ If true, split the line to extract the height of the piece. @done(24-05-29 00:45)
+        ✔ Read each subsequent line (piece configuration) and collect into piece. @done(24-05-29 00:45)
+    ## Determining Enemy Characters
+    ✔ Based on the player identifier p, set the enemy characters (enemy and enemy2). @done(24-05-30 19:26)
+    ## Finding Valid Positions
+    ✔ Call place_piece_on_board to find all valid positions for the piece on the board. @done(24-06-01 15:00)
+    ## Calculating Enemy Positions
+    ☐ Collect all positions on the board occupied by enemy characters.
+    ## Selecting the Best Position
+    ☐ Check if there are valid positions.
+        ☐ If true, select the best position based on the minimum distance to any enemy position.
+        ☐ Print the chosen coordinates.
+        ☐ Clear the piece and anfield vectors for the next iteration.
+        ☐ If false, print 0 0 and clear the piece and anfield vectors.
+    ## Helper Functions 
+    ☐ can_place_piece:
+        ✔ Check if the piece can be placed at a given position on the board without overlapping enemy pieces and ensuring one cell overlaps with the player's existing pieces. @done(24-06-01 15:00)
+    ☐ place_piece_on_board:
+        ✔ Find all valid positions to place the piece on the board for the current player. @done(24-06-01 15:00)
+    ☐ distance:
+        ☐ Calculate the Euclidean distance between two points on the board.
+    ## Loop Control
+    ☐ Ensure the loop continues until all lines are read and processed.Item
+  
