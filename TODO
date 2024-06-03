@@ -23,20 +23,20 @@ Todo:
     ## Finding Valid Positions
     ✔ Call place_piece_on_board to find all valid positions for the piece on the board. @done(24-06-01 15:00)
     ## Calculating Enemy Positions
-    ☐ Collect all positions on the board occupied by enemy characters.
+    ✔ Collect all positions on the board occupied by enemy characters. @done(24-06-03 10:37)
     ## Selecting the Best Position
-    ☐ Check if there are valid positions.
-        ☐ If true, select the best position based on the minimum distance to any enemy position.
-        ☐ Print the chosen coordinates.
-        ☐ Clear the piece and anfield vectors for the next iteration.
-        ☐ If false, print 0 0 and clear the piece and anfield vectors.
+    ✔ Check if there are valid positions. @done(24-06-03 10:39)
+        ✔ If true, select the best position based on the minimum distance to any enemy position. @done(24-06-03 14:28)
+        ✔ Print the chosen coordinates. @done(24-06-03 14:28)
+        ✔ Clear the piece and anfield vectors for the next iteration. @done(24-06-03 10:39)
+        ✔ If false, print 0 0 and clear the piece and anfield vectors. @done(24-06-03 14:28)
     ## Helper Functions 
-    ☐ can_place_piece:
+    ✔ can_place_piece: @done(24-06-03 10:39)
         ✔ Check if the piece can be placed at a given position on the board without overlapping enemy pieces and ensuring one cell overlaps with the player's existing pieces. @done(24-06-01 15:00)
-    ☐ place_piece_on_board:
+    ✔ place_piece_on_board: @done(24-06-03 10:39)
         ✔ Find all valid positions to place the piece on the board for the current player. @done(24-06-01 15:00)
-    ☐ distance:
-        ☐ Calculate the Euclidean distance between two points on the board.
+    ✔ distance: @done(24-06-03 14:28)
+        ✔ Calculate the Euclidean distance between two points on the board. @done(24-06-03 14:28)
     ## Loop Control
     ✔ Ensure the loop continues until all lines are read and processed.Item @done(24-06-01 23:03)
   

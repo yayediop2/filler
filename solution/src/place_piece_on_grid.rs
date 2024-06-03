@@ -1,18 +1,18 @@
-
 pub fn place_piece_on_grid(
     grid: &Vec<Vec<char>>,
     piece: &Vec<Vec<char>>,
     enemy: char,
     enemy2: char,
-) -> (usize, usize) {
+) -> Vec<(usize, usize)> {
+    let mut valid_positions = vec![];
     for i in 0..grid.len() {
         for j in 0..grid[i].len() {
             if can_place_piece(i, j, grid, piece, enemy, enemy2) {
-                return (j, i);
-            } 
+                valid_positions.push((j, i));
+            }
         }
     }
-    (0, 0)
+    valid_positions
 }
 
 pub fn can_place_piece(
@@ -42,6 +42,17 @@ pub fn can_place_piece(
             }
         }
     }
-
     overlap_counter == 1
+}
+
+pub fn get_enemy_positions(grid: &Vec<Vec<char>>, enemy: char, enemy2: char) -> Vec<(usize, usize)> {
+    let mut enemy_positions = Vec::new();
+    for i in 0..grid.len() {
+        for j in 0..grid[i].len() {
+            if grid[i][j] == enemy || grid[i][j] == enemy2 {
+                enemy_positions.push((j, i));
+            }
+        }
+    }
+    enemy_positions
 }
