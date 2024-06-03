@@ -6,10 +6,10 @@ use place_piece_on_grid::{get_enemy_positions, place_piece_on_grid};
 fn main() {
     let player_name = parse_player_name();
 
-    let (_player_char, _player_char2, enemy, enemy2) = if player_name == "p1" {
-        ('a', '@', 's', '$')
+    let (enemy, enemy2) = if player_name == "p1" {
+        ('s', '$')
     } else {
-        ('s', '$', 'a', '@')
+        ('a', '@')
     };
 
     loop {
