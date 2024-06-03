@@ -22,7 +22,7 @@ fn main() {
             print!("0 0\n");
         } else {
             let (x, y) = closest.unwrap();
-            print!("{} {}\n", x, y);
+            print!("{} {}\n", y, x);
         }
     }
 }

@@ -8,7 +8,7 @@ pub fn place_piece_on_grid(
     for i in 0..grid.len() {
         for j in 0..grid[i].len() {
             if can_place_piece(i, j, grid, piece, enemy, enemy2) {
-                valid_positions.push((j, i));
+                valid_positions.push((i, j));
             }
         }
     }
@@ -50,7 +50,7 @@ pub fn get_enemy_positions(grid: &Vec<Vec<char>>, enemy: char, enemy2: char) -> 
     for i in 0..grid.len() {
         for j in 0..grid[i].len() {
             if grid[i][j] == enemy || grid[i][j] == enemy2 {
-                enemy_positions.push((j, i));
+                enemy_positions.push((i, j));
             }
         }
     }
