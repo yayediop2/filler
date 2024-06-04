@@ -13,10 +13,10 @@ use place_piece_on_grid::{closest_position, get_enemy_positions, place_piece_on_
 fn main() {
     let player_name = parse_player_name();
 
-    let (enemy, enemy2) = if player_name == "p1" {
-        ('s', '$')
+    let (player, player2, enemy, enemy2) = if player_name == "p1" {
+        ('a', '@', 's', '$')
     } else {
-        ('a', '@')
+        ('s', '$', 'a', '@')
     };
 
     let sdl_context = sdl2::init().unwrap();
@@ -38,7 +38,7 @@ fn main() {
         let enemy_positions = get_enemy_positions(&grid, enemy, enemy2);
         let closest = closest_position(valid_positions, enemy_positions);
 
-        draw(&grid, &mut canvas);
+        draw(&grid, &mut canvas, player, player2, enemy, enemy2);
 
         if closest.is_none() {
             print!("0 0\n");
@@ -63,7 +63,14 @@ fn main() {
     }
 }
 
-fn draw(grid: &Vec<Vec<char>>, canvas: &mut Canvas<sdl2::video::Window>) -> () {
+fn draw(
+    grid: &Vec<Vec<char>>,
+    canvas: &mut Canvas<sdl2::video::Window>,
+    player: char,
+    player2: char,
+    enemy: char,
+    enemy2: char,
+) -> () {
     canvas.set_draw_color(Color::RGB(0, 0, 0));
 
     let (width, height) = canvas.output_size().unwrap();
@@ -72,12 +79,13 @@ fn draw(grid: &Vec<Vec<char>>, canvas: &mut Canvas<sdl2::video::Window>) -> () {
 
     for (i, row) in grid.iter().enumerate() {
         for (j, col) in row.iter().enumerate() {
-            let bric_color = match col {
-                'a' => Color::RGB(96, 108, 56),
-                '@' => Color::RGB(96, 108, 56),
-                's' => Color::RGB(254, 250, 224),
-                '$' => Color::RGB(254, 250, 224),
-                _ => Color::RGB(0, 0, 0),
+
+            let bric_color = if col == &player || col == &player2 {
+                Color::RGB(96, 108, 56)
+            } else if col == &enemy|| col== &enemy2 {
+                Color::RGB(254, 250, 224)
+            } else {
+                Color::RGB(0, 0, 0)
             };
 
             canvas.set_draw_color(bric_color);
