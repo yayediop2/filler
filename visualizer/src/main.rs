@@ -1,5 +1,6 @@
 extern crate sdl2;
 
+use sdl2::image::{self, InitFlag, LoadTexture};
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use sdl2::{event::Event, render::Canvas};
@@ -22,14 +23,22 @@ fn main() {
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
+    // Initialize SDL2_image
+    let _image_context = image::init(InitFlag::PNG).unwrap();
+
     let window = video_subsystem
-        .window("Filler visualizer", 800, 600)
+        .window("Filler visualizer", 1300, 1000)
         .position_centered()
         .build()
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
     let mut event_pump = sdl_context.event_pump().unwrap();
+
+    let texture_creator = canvas.texture_creator();
+
+    let player_texture = texture_creator.load_texture("visualizer/assets/old.jpg").unwrap();
+    let enemy_texture = texture_creator.load_texture("visualizer/assets/angry.jpg").unwrap();
 
     'my_loop: loop {
         let (grid, piece) = parse_file();
@@ -38,8 +47,17 @@ fn main() {
         let enemy_positions = get_enemy_positions(&grid, enemy, enemy2);
         let closest = closest_position(valid_positions, enemy_positions);
 
-        draw(&grid, &mut canvas, player, player2, enemy, enemy2);
-
+        draw(
+            &grid,
+            &mut canvas,
+            &player_texture,
+            &enemy_texture,
+            player,
+            player2,
+            enemy,
+            enemy2,
+        );
+        
         if closest.is_none() {
             print!("0 0\n");
         } else {
@@ -66,12 +84,15 @@ fn main() {
 fn draw(
     grid: &Vec<Vec<char>>,
     canvas: &mut Canvas<sdl2::video::Window>,
+    player_texture: &sdl2::render::Texture,
+    enemy_texture: &sdl2::render::Texture,
     player: char,
     player2: char,
     enemy: char,
     enemy2: char,
 ) -> () {
     canvas.set_draw_color(Color::RGB(0, 0, 0));
+    canvas.clear();
 
     let (width, height) = canvas.output_size().unwrap();
     let cell_width = width / grid[0].len() as u32;
@@ -79,21 +100,24 @@ fn draw(
 
     for (i, row) in grid.iter().enumerate() {
         for (j, col) in row.iter().enumerate() {
-
-            let bric_color = if col == &player || col == &player2 {
-                Color::RGB(96, 108, 56)
-            } else if col == &enemy|| col== &enemy2 {
-                Color::RGB(254, 250, 224)
+            let texture = if col == &player || col == &player2 {
+                Some(player_texture)
+            } else if col == &enemy || col == &enemy2 {
+                Some(enemy_texture)
             } else {
-                Color::RGB(0, 0, 0)
+                None
             };
-
-            canvas.set_draw_color(bric_color);
 
             let x = (j as u32 * cell_width) as i32;
             let y = (i as u32 * cell_height) as i32;
             let rect = sdl2::rect::Rect::new(x, y, cell_width, cell_height);
-            canvas.fill_rect(rect).unwrap();
+
+            if let Some(texture) = texture {
+                canvas.copy(texture, None, rect).unwrap();
+            } else {
+                canvas.set_draw_color(Color::RGB(255, 255, 255));
+                canvas.fill_rect(rect).unwrap();
+            }
         }
     }
 }
