@@ -1,4 +1,7 @@
-use std::io::{self, BufRead};
+use std::{
+    io::{self, BufRead},
+    time::Duration,
+};
 
 pub fn parse_player_name() -> String {
     let stdin = io::stdin();
@@ -37,6 +40,9 @@ pub fn parse_file() -> (Vec<Vec<char>>, Vec<Vec<char>>) {
         if counter == 0 && !piece.is_empty() {
             break;
         }
+    }
+    if grid.is_empty() || piece.is_empty() {
+        std::thread::sleep(Duration::from_secs(10));
     }
 
     (grid, piece)
