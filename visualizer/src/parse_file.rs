@@ -3,13 +3,11 @@ use std::io::{self, BufRead};
 pub fn parse_player_name() -> String {
     let stdin = io::stdin();
     let mut lines = stdin.lock().lines();
-    let mut player_name = String::new();
 
     while let Some(Ok(line)) = lines.next() {
         if line.starts_with("$$$") && line.contains("solution") {
             let (_first, second) = line.split_at(9);
-            player_name = second[0..2].to_string();
-            return player_name;
+            return second[0..2].to_string();
         }
     }
     String::new()

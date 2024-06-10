@@ -1,13 +1,14 @@
 extern crate sdl2;
 
-use sdl2::image::{self, InitFlag, LoadTexture};
+use sdl2::event::Event;
+use sdl2::image::LoadTexture;
 use sdl2::keyboard::Keycode;
-use sdl2::pixels::Color;
-use sdl2::{event::Event, render::Canvas};
 use std::time::Duration;
 
+mod draw;
 mod parse_file;
 mod place_piece_on_grid;
+use draw::{draw, initialisation};
 use parse_file::{parse_file, parse_player_name};
 use place_piece_on_grid::{closest_position, get_enemy_positions, place_piece_on_grid};
 
@@ -20,25 +21,16 @@ fn main() {
         ('s', '$', 'a', '@')
     };
 
-    let sdl_context = sdl2::init().unwrap();
-    let video_subsystem = sdl_context.video().unwrap();
-
-    // Initialize SDL2_image
-    let _image_context = image::init(InitFlag::PNG).unwrap();
-
-    let window = video_subsystem
-        .window("Filler visualizer", 1300, 1000)
-        .position_centered()
-        .build()
-        .unwrap();
-
-    let mut canvas = window.into_canvas().build().unwrap();
-    let mut event_pump = sdl_context.event_pump().unwrap();
+    let (mut canvas, mut event_pump) = initialisation();
 
     let texture_creator = canvas.texture_creator();
 
-    let player_texture = texture_creator.load_texture("visualizer/assets/old.jpg").unwrap();
-    let enemy_texture = texture_creator.load_texture("visualizer/assets/angry.jpg").unwrap();
+    let player_texture = texture_creator
+        .load_texture("visualizer/assets/playful.jpg")
+        .unwrap();
+    let enemy_texture = texture_creator
+        .load_texture("visualizer/assets/angrier.jpg")
+        .unwrap();
 
     'my_loop: loop {
         let (grid, piece) = parse_file();
@@ -57,7 +49,7 @@ fn main() {
             enemy,
             enemy2,
         );
-        
+
         if closest.is_none() {
             print!("0 0\n");
         } else {
@@ -78,46 +70,5 @@ fn main() {
 
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
-    }
-}
-
-fn draw(
-    grid: &Vec<Vec<char>>,
-    canvas: &mut Canvas<sdl2::video::Window>,
-    player_texture: &sdl2::render::Texture,
-    enemy_texture: &sdl2::render::Texture,
-    player: char,
-    player2: char,
-    enemy: char,
-    enemy2: char,
-) -> () {
-    canvas.set_draw_color(Color::RGB(0, 0, 0));
-    canvas.clear();
-
-    let (width, height) = canvas.output_size().unwrap();
-    let cell_width = width / grid[0].len() as u32;
-    let cell_height = height / grid.len() as u32;
-
-    for (i, row) in grid.iter().enumerate() {
-        for (j, col) in row.iter().enumerate() {
-            let texture = if col == &player || col == &player2 {
-                Some(player_texture)
-            } else if col == &enemy || col == &enemy2 {
-                Some(enemy_texture)
-            } else {
-                None
-            };
-
-            let x = (j as u32 * cell_width) as i32;
-            let y = (i as u32 * cell_height) as i32;
-            let rect = sdl2::rect::Rect::new(x, y, cell_width, cell_height);
-
-            if let Some(texture) = texture {
-                canvas.copy(texture, None, rect).unwrap();
-            } else {
-                canvas.set_draw_color(Color::RGB(255, 255, 255));
-                canvas.fill_rect(rect).unwrap();
-            }
-        }
     }
 }
